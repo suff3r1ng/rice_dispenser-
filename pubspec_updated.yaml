@@ -1,0 +1,30 @@
+name: smart_rice_app
+description: Smart Rice Container Monitoring and Dispensing System
+publish_to: "none"
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Supabase client for Flutter
+  supabase_flutter: ^2.9.0
+  # For local push notifications (temporarily disabled due to build issues)
+  # flutter_local_notifications: ^17.0.0
+  # For simple charts in History
+  fl_chart: ^1.0.0
+
+  # State management (optional; we'll use Provider)
+  provider: ^6.1.2
+  # Utilities
+  intl: ^0.20.2
+  path: ^1.9.1
+  # Logger for production-ready logging
+  logger: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
