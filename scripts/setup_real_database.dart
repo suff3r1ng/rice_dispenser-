@@ -1,8 +1,8 @@
 // scripts/setup_real_database.dart
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../lib/config/supabase_config.dart';
-import '../lib/services/logger_service.dart';
+import 'package:smart_rice_app/config/supabase_config.dart';
+import 'package:smart_rice_app/services/logger_service.dart';
 
 /// This script helps set up the real Supabase database by executing the SQL scripts
 void main() async {

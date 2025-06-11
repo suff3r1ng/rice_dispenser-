@@ -5,7 +5,7 @@ import 'supabase_service.dart';
 import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/dispense_screen.dart';
-import 'screens/settings_screen.dart';hi
+import 'screens/settings_screen.dart';
 import 'screens/database_status_screen.dart';
 import 'screens/database_management_screen.dart';
 import 'models/settings.dart';
