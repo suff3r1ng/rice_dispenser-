@@ -10,15 +10,18 @@ dependencies:
     sdk: flutter
 
   # Supabase client for Flutter
-  supabase_flutter: ^1.0.0  # For local push notifications (temporarily disabled due to build issues)
+  supabase_flutter: ^2.9.1  # For local push notifications (temporarily disabled due to build issues)
   # flutter_local_notifications: ^17.0.0
   # For simple charts in History
-  fl_chart: ^0.68.0
+  fl_chart: ^0.71.0
 
   # State management (optional; we'll use Provider)
   provider: ^6.0.0  # Utilities
-  intl: ^0.18.0
+  intl: ^0.20.2
   path: ^1.8.0
+  
+  # Environment variables
+  flutter_dotenv: ^5.1.0
   
   # Logging
   logger: ^2.0.2
@@ -26,7 +29,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
+  
+  # Add .env files to assets
+  assets:
+    - .env

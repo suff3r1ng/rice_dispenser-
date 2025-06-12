@@ -1,19 +1,26 @@
 // lib/config/supabase_config.dart
-class SupabaseConfig {
-  // TODO: Replace these with your actual Supabase project credentials
-  // Go to https://supabase.com/dashboard to create a new project
+import '../env.dart';
 
-  static const String supabaseUrl = 'https://hdzuqgojojdtcemxxkbt.supabase.co';
-  static const String supabaseAnonKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkenVxZ29qb2pkdGNlbXh4a2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MzIzOTEsImV4cCI6MjA2MjIwODM5MX0.l6idHd0WrNkIfZ5uRAiKRD-Ump7HOIxROy0DMSYq7q0';
+class SupabaseConfig {
+  // Using environment variables for Supabase credentials
+  // Go to https://supabase.com/dashboard to create a new project
+  // Then set these values in your .env file
+
+  // These fallback values are used if environment variables are not set
+  static const String fallbackUrl = 'https://your-project-id.supabase.co';
+  static const String fallbackAnonKey = 'your-supabase-anon-key';
 
   // For development/testing, you can use these demo values (they won't work for real connections):
   static const String demoUrl = 'https://demo.supabase.co';
   static const String demoKey = 'demo_key_for_testing';
 
-  // Set this to true to use demo mode (no real database connection)
-  static const bool useDemoMode = false;
+  // Default to demo mode if not explicitly set to false in .env
+  static bool get useDemoMode {
+    // If USE_DEMO_MODE is not found in .env or couldn't be parsed, default to true for safety
+    return Env.useDemoMode ?? true;
+  }
 
-  static String get url => useDemoMode ? demoUrl : supabaseUrl;
-  static String get anonKey => useDemoMode ? demoKey : supabaseAnonKey;
+  // Get URL and key from environment variables with fallbacks
+  static String get url => useDemoMode ? demoUrl : Env.supabaseUrl;
+  static String get anonKey => useDemoMode ? demoKey : Env.supabaseAnonKey;
 }

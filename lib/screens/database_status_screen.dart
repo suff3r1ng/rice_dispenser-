@@ -1,6 +1,7 @@
 // lib/screens/database_status_screen.dart
 import 'package:flutter/material.dart';
 import '../supabase_service.dart';
+import '../config/supabase_config.dart';
 
 class DatabaseStatusScreen extends StatefulWidget {
   const DatabaseStatusScreen({super.key});
@@ -355,13 +356,29 @@ class _DatabaseStatusScreenState extends State<DatabaseStatusScreen> {
   Future<void> _testConnection() async {
     setState(() => _isRefreshing = true);
     try {
-      await _supabaseService.supabase.from('rice_weight').select('id').limit(1);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Connection test successful'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (SupabaseConfig.useDemoMode) {
+        // In demo mode, just pretend the connection test was successful
+        await Future.delayed(
+            const Duration(milliseconds: 800)); // Simulate delay
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connection test successful (Demo Mode)'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // In real mode, actually test the connection
+        await _supabaseService.supabase
+            .from('rice_weight')
+            .select('id')
+            .limit(1);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connection test successful'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -377,22 +394,35 @@ class _DatabaseStatusScreenState extends State<DatabaseStatusScreen> {
   Future<void> _addSampleData() async {
     setState(() => _isRefreshing = true);
     try {
-      // Add some sample rice weight data
-      await _supabaseService.supabase.from('rice_weight').insert([
-        {
-          'weight_grams': 3500 + (DateTime.now().millisecond % 1000),
-          'level_state': 'partial',
-          'timestamp': DateTime.now().toIso8601String(),
-        }
-      ]);
+      if (SupabaseConfig.useDemoMode) {
+        // In demo mode, just pretend we added data
+        await Future.delayed(
+            const Duration(milliseconds: 800)); // Simulate delay
+        await _refreshStatus();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sample data added successfully (Demo Mode)'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // In real mode, actually add data
+        await _supabaseService.supabase.from('rice_weight').insert([
+          {
+            'weight_grams': 3500 + (DateTime.now().millisecond % 1000),
+            'level_state': 'partial',
+            'timestamp': DateTime.now().toIso8601String(),
+          }
+        ]);
 
-      await _refreshStatus();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sample data added successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
+        await _refreshStatus();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sample data added successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

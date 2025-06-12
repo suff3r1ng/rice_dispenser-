@@ -1,3 +1,6 @@
+# Add .env file to gitignore
+.env
+
 # Miscellaneous
 *.class
 *.log

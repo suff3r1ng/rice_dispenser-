@@ -21,15 +21,21 @@ You have two options:
 2. Navigate to the Database Management screen
 3. Use the GUI to execute the schema creation
 
-## 3. Update Credentials in the App
+## 3. Update Environment Variables
 
-1. Open `lib/config/supabase_config.dart`
-2. Replace the placeholder values with your actual Supabase credentials:
-   ```dart
-   static const String supabaseUrl = 'https://your-project-id.supabase.co';
-   static const String supabaseAnonKey = 'your-supabase-anon-key';
+The app now uses environment variables for Supabase credentials. 
+
+1. Edit the `.env` file in the project root (create it if it doesn't exist):
    ```
-3. Make sure `useDemoMode` is set to `false`
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-supabase-anon-key
+   USE_DEMO_MODE=false
+   ```
+
+2. Replace with your actual Supabase credentials:
+   - `SUPABASE_URL`: Your Supabase project URL
+   - `SUPABASE_ANON_KEY`: Your Supabase anon/public key
+   - `USE_DEMO_MODE`: Set to `false` to use real database, `true` for demo mode
 
 ## 4. Finding Your Supabase Credentials
 
@@ -40,11 +46,30 @@ You have two options:
 
 ## 5. Restart the App
 
-After updating the credentials, restart the app. It will now connect to your real Supabase database instead of using demo data.
+After updating the environment variables, restart the app. It will now connect to your real Supabase database instead of using demo mode.
 
 ## Troubleshooting
 
-If you encounter any issues:
+### Connection Issues
+
+If you see the error "Failed to initialize app" with a SocketException or ClientException:
+
+1. **Check your internet connection** - Make sure you have internet access
+2. **Verify credentials** - Double-check that your Supabase URL and anon key are correct
+3. **Temporarily use demo mode** - If you're still having issues, set `USE_DEMO_MODE=true` in the `.env` file until you can resolve the connection issues
+4. **Check Supabase status** - Make sure your Supabase project is active and not paused
+5. **Network restrictions** - Some networks might block certain connections; try on a different network
+
+### Database Tables Not Found
+
+If tables are missing:
+
+1. Use the Database Management screen to generate the SQL schema
+2. Copy the generated SQL and run it in the Supabase SQL Editor
+3. Check the Supabase dashboard to verify tables were created
+
+### General Issues
+
 - Check the app logs for error messages
 - Verify your Supabase credentials are correct
 - Make sure your database tables are properly created

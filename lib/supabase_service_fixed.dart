@@ -87,15 +87,16 @@ class SupabaseService {
         return;
       }
 
-      // Supabase initialization is now handled in main.dart
-      // Skip to testing connection and verifying tables
+      // Initialize Supabase for real database connection
+      await Supabase.initialize(
+        url: SupabaseConfig.url,
+        anonKey: SupabaseConfig.anonKey,
+      );
 
       // Test connection and setup database
       await _testConnection();
       await _runMigrations();
       await _ensureTablesExist();
-      // Skipped sample data injection to use only real database entries
-
       _updateConnectionStatus(DatabaseStatus.connected);
       LoggerService.info('✅ Supabase initialization completed successfully');
     } catch (e) {
@@ -167,8 +168,7 @@ class SupabaseService {
 
       // Check rice_weight table
       try {
-        final riceWeightResponse =
-            await supabase.from('rice_weight').select('*');
+        final riceWeightResponse = await supabase.from('rice_weight').select('*');
         tableStatuses.add(DatabaseInfo(
           tableName: 'rice_weight',
           status: TableStatus.exists,
@@ -188,8 +188,7 @@ class SupabaseService {
 
       // Check dispense_request table
       try {
-        final requestResponse =
-            await supabase.from('dispense_request').select('*');
+        final requestResponse = await supabase.from('dispense_request').select('*');
         tableStatuses.add(DatabaseInfo(
           tableName: 'dispense_request',
           status: TableStatus.exists,
@@ -332,7 +331,9 @@ class SupabaseService {
           .select()
           .order('timestamp', ascending: true);
 
-      return response.map((row) => RiceWeight.fromMap(row)).toList();
+      return response
+          .map((row) => RiceWeight.fromMap(row))
+          .toList();
     } catch (e) {
       LoggerService.error('Error fetching rice history', e);
       return [];
@@ -391,7 +392,9 @@ class SupabaseService {
           .select()
           .order('requested_at', ascending: false);
 
-      return response.map((row) => DispenseRequest.fromMap(row)).toList();
+      return response
+          .map((row) => DispenseRequest.fromMap(row))
+          .toList();
     } catch (e) {
       LoggerService.error('Error fetching dispense history', e);
       return [];
@@ -551,8 +554,7 @@ class SupabaseService {
 
         // Check rice_weight table
         try {
-          final riceWeightResponse =
-              await supabase.from('rice_weight').select('*');
+          final riceWeightResponse = await supabase.from('rice_weight').select('*');
           tableStatuses.add(DatabaseInfo(
             tableName: 'rice_weight',
             status: TableStatus.exists,
@@ -569,8 +571,7 @@ class SupabaseService {
 
         // Check dispense_request table
         try {
-          final requestResponse =
-              await supabase.from('dispense_request').select('*');
+          final requestResponse = await supabase.from('dispense_request').select('*');
           tableStatuses.add(DatabaseInfo(
             tableName: 'dispense_request',
             status: TableStatus.exists,

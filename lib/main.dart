@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'supabase_service.dart';
 import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
@@ -10,12 +11,33 @@ import 'screens/database_status_screen.dart';
 import 'screens/database_management_screen.dart';
 import 'models/settings.dart';
 import 'services/logger_service.dart';
+import 'env.dart';
+import 'config/supabase_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
     LoggerService.info('🚀 Starting Smart Rice Dispenser App...');
+
+    // Initialize environment variables first
+    await Env.initialize();
+
+    // Initialize Supabase directly when in demo mode
+    if (SupabaseConfig.useDemoMode) {
+      LoggerService.info('Using demo mode - skipping Supabase initialization');
+    } else {
+      // Initialize Supabase directly before creating SupabaseService
+      LoggerService.info(
+          'Initializing Supabase with URL: ${SupabaseConfig.url}');
+      await Supabase.initialize(
+        url: SupabaseConfig.url,
+        anonKey: SupabaseConfig.anonKey,
+      );
+      LoggerService.info('Supabase initialized successfully');
+    }
+
+    // Now initialize our service
     await SupabaseService().initialize();
 
     // Preload settings
